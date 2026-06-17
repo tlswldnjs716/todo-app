@@ -101,6 +101,17 @@ async function handleAuth() {
   }
 }
 
+// ── 소셜 로그인 ────────────────────────────────
+const REDIRECT = 'https://tlswldnjs716.github.io/todo-app';
+
+document.getElementById('github-btn').addEventListener('click', () =>
+  db.auth.signInWithOAuth({ provider: 'github', options: { redirectTo: REDIRECT } })
+);
+
+document.getElementById('google-btn').addEventListener('click', () =>
+  db.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: REDIRECT } })
+);
+
 // ── 로그아웃 ───────────────────────────────────
 document.getElementById('logout-btn').addEventListener('click', () => db.auth.signOut());
 

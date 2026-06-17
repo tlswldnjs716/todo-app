@@ -553,3 +553,47 @@ header { position: relative; }
 }
 
 .auth-switch-text a:hover { text-decoration: underline; }
+
+/* ── 소셜 로그인 ──────────────────────────────── */
+.auth-divider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #d0eefa;
+}
+
+.social-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 11px 16px;
+  border-radius: 14px;
+  border: 2px solid #d0eefa;
+  background: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+  color: var(--text);
+}
+
+.social-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+.social-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+.github-btn:hover { border-color: #333; color: #333; }
+.google-btn:hover { border-color: #4285F4; }
