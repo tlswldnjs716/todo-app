@@ -1,0 +1,420 @@
+/* ── Reset ────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue-1: #5bc8f5;
+  --blue-2: #3ab5e5;
+  --blue-3: #1a9fd0;
+  --bg: #e8f7ff;
+  --bg2: #d0eefa;
+  --card: #ffffff;
+  --text: #2c4a6b;
+  --text-muted: #7baabf;
+  --high: #ff6b6b;
+  --high-bg: #fff0f0;
+  --mid: #ffc145;
+  --mid-bg: #fffbf0;
+  --low: #4ecb8d;
+  --low-bg: #f0fff8;
+  --shadow: 0 4px 20px rgba(59, 130, 180, 0.15);
+  --shadow-card: 0 6px 24px rgba(59, 130, 180, 0.12);
+  --radius: 20px;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: linear-gradient(160deg, var(--bg) 0%, var(--bg2) 100%);
+  min-height: 100vh;
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  padding: 32px 16px 80px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ── 배경 버블 ────────────────────────────────── */
+.bubbles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(91, 200, 245, var(--op, 0.12));
+  animation: floatUp var(--dur, 8s) ease-in infinite var(--delay, 0s);
+  bottom: -80px;
+}
+
+@keyframes floatUp {
+  0%   { transform: translateY(0) scale(1); opacity: var(--op, 0.12); }
+  80%  { opacity: var(--op, 0.12); }
+  100% { transform: translateY(-110vh) scale(1.1); opacity: 0; }
+}
+
+/* ── Container ────────────────────────────────── */
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── 헤더 & 스티치 이미지 ─────────────────────── */
+header {
+  text-align: center;
+  padding-top: 8px;
+}
+
+.stitch-face {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.stitch-img {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 18px rgba(58, 181, 229, 0.4));
+  animation: bounce 2.8s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* ── 타이틀 ───────────────────────────────────── */
+.title {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  color: var(--blue-3);
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 0 rgba(91,200,245,0.4);
+}
+
+.subtitle {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.date {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--blue-2);
+  margin-top: 6px;
+  letter-spacing: 0.05em;
+}
+
+/* ── 입력 카드 ────────────────────────────────── */
+.input-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 2px solid rgba(91, 200, 245, 0.3);
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.todo-input {
+  flex: 1;
+  border: 2px solid #d0eefa;
+  border-radius: 14px;
+  padding: 11px 16px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text);
+  outline: none;
+  background: #f5fbff;
+  transition: border-color 0.2s;
+}
+
+.todo-input:focus {
+  border-color: var(--blue-1);
+  background: #fff;
+}
+
+.todo-input::placeholder {
+  color: #a0c8df;
+}
+
+.add-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, var(--blue-1), var(--blue-3));
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 400;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(58, 181, 229, 0.45);
+  transition: transform 0.15s, box-shadow 0.15s;
+  line-height: 1;
+}
+
+.add-btn:hover  { transform: scale(1.08); box-shadow: 0 6px 16px rgba(58,181,229,0.55); }
+.add-btn:active { transform: scale(0.95); }
+
+/* ── 우선순위 선택 ────────────────────────────── */
+.priority-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.priority-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.priority-btns {
+  display: flex;
+  gap: 7px;
+}
+
+.p-btn {
+  border: 2px solid transparent;
+  border-radius: 20px;
+  padding: 5px 13px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: #f0f7fc;
+  color: var(--text-muted);
+  transition: all 0.18s;
+}
+
+.p-btn.p-high.active { background: var(--high-bg); border-color: var(--high); color: var(--high); }
+.p-btn.p-mid.active  { background: var(--mid-bg);  border-color: var(--mid);  color: #c88a00; }
+.p-btn.p-low.active  { background: var(--low-bg);  border-color: var(--low);  color: #1a8a57; }
+
+.p-btn:hover { transform: scale(1.05); }
+
+/* ── 필터 탭 ──────────────────────────────────── */
+.filter-tabs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.tab {
+  border: none;
+  background: #fff;
+  border-radius: 20px;
+  padding: 7px 18px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.18s;
+  box-shadow: 0 2px 8px rgba(91,200,245,0.1);
+}
+
+.tab.active {
+  background: linear-gradient(135deg, var(--blue-1), var(--blue-3));
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(58,181,229,0.35);
+}
+
+.tab:hover:not(.active) { border-color: var(--blue-1); color: var(--blue-2); }
+
+/* ── 할 일 목록 ───────────────────────────────── */
+.todo-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── 할 일 아이템 ─────────────────────────────── */
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  border-radius: 16px;
+  padding: 13px 14px;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--blue-1);
+  transition: transform 0.18s, box-shadow 0.18s;
+  animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.todo-item:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(59,130,180,0.2); }
+
+.todo-item.priority-high { border-left-color: var(--high); }
+.todo-item.priority-mid  { border-left-color: var(--mid);  }
+.todo-item.priority-low  { border-left-color: var(--low);  }
+
+.todo-item.done {
+  opacity: 0.65;
+  background: #f8fbfd;
+}
+
+.todo-item.removing {
+  animation: slideOut 0.28s ease forwards;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.92) translateY(-6px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+@keyframes slideOut {
+  to { opacity: 0; transform: translateX(24px) scale(0.95); max-height: 0; padding: 0; margin: 0; overflow: hidden; }
+}
+
+/* ── 우선순위 뱃지 ────────────────────────────── */
+.priority-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.priority-badge.high { background: var(--high-bg); color: var(--high); }
+.priority-badge.mid  { background: var(--mid-bg);  color: #c88a00; }
+.priority-badge.low  { background: var(--low-bg);  color: #1a8a57; }
+
+/* ── 체크박스 ─────────────────────────────────── */
+.checkbox-wrap {
+  flex-shrink: 0;
+  position: relative;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.checkbox-wrap input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.checkbox-custom {
+  position: absolute;
+  inset: 0;
+  border-radius: 7px;
+  border: 2.5px solid #b0d8ee;
+  background: #f5fbff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.checkbox-custom svg {
+  width: 13px;
+  height: 13px;
+  stroke: #fff;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+  transition: stroke-dashoffset 0.28s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.checkbox-wrap input:checked ~ .checkbox-custom {
+  background: linear-gradient(135deg, var(--blue-1), var(--blue-3));
+  border-color: var(--blue-2);
+}
+
+.checkbox-wrap input:checked ~ .checkbox-custom svg {
+  stroke-dashoffset: 0;
+}
+
+/* ── 할 일 텍스트 ─────────────────────────────── */
+.todo-text {
+  flex: 1;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  word-break: break-word;
+  line-height: 1.4;
+  transition: color 0.25s;
+}
+
+.todo-item.done .todo-text {
+  text-decoration: line-through;
+  text-decoration-color: rgba(58, 181, 229, 0.5);
+  color: var(--text-muted);
+}
+
+/* ── 삭제 버튼 ────────────────────────────────── */
+.delete-btn {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: #c0d8e8;
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.18s, background 0.18s, color 0.18s;
+  font-size: 1.1rem;
+}
+
+.todo-item:hover .delete-btn { opacity: 1; }
+.delete-btn:hover { background: #fff0f0; color: var(--high); }
+
+/* ── 빈 메시지 ────────────────────────────────── */
+.empty-msg {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 2;
+  padding: 28px 0;
+  display: none;
+}
+
+.empty-msg span { font-size: 1.05rem; }
+
+/* ── 카운터 ───────────────────────────────────── */
+footer { text-align: center; }
+
+.counter {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>스티치의 할 일 목록</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- 배경 버블 -->
+  <div class="bubbles" id="bubbles"></div>
+
+  <div class="container">
+
+    <!-- 헤더 -->
+    <header>
+      <div class="stitch-face">
+        <img src="stitch.png" alt="스티치" class="stitch-img" />
+      </div>
+      <h1 class="title">오하나의 할 일</h1>
+      <p class="subtitle">오하나는 가족을 의미해. 가족은 서로를 포기하지 않아 🌺</p>
+      <p class="date" id="date"></p>
+    </header>
+
+    <main>
+      <!-- 입력 영역 -->
+      <div class="input-card">
+        <div class="input-row">
+          <input
+            type="text"
+            id="todo-input"
+            class="todo-input"
+            placeholder="할 일을 적어봐요! 스티치가 도와줄게요 🐾"
+            maxlength="100"
+            autocomplete="off"
+          />
+          <button id="add-btn" class="add-btn" aria-label="추가">
+            <span>+</span>
+          </button>
+        </div>
+        <div class="priority-row">
+          <span class="priority-label">우선순위</span>
+          <div class="priority-btns" id="priority-btns">
+            <button class="p-btn p-high" data-priority="high">🔴 높음</button>
+            <button class="p-btn p-mid active" data-priority="mid">🟡 보통</button>
+            <button class="p-btn p-low" data-priority="low">🟢 낮음</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 필터 탭 -->
+      <div class="filter-tabs">
+        <button class="tab active" data-filter="all">전체</button>
+        <button class="tab" data-filter="active">진행중</button>
+        <button class="tab" data-filter="done">완료</button>
+      </div>
+
+      <!-- 할 일 목록 -->
+      <ul class="todo-list" id="todo-list"></ul>
+
+      <p class="empty-msg" id="empty-msg">
+        할 일이 없어요!<br />
+        <span>스티치처럼 자유롭게 놀아요 🏄</span>
+      </p>
+    </main>
+
+    <footer>
+      <span id="counter" class="counter"></span>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>
