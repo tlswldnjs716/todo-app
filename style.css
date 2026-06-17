@@ -418,3 +418,138 @@ footer { text-align: center; }
   color: var(--text-muted);
   letter-spacing: 0.04em;
 }
+
+/* ── 로그아웃 버튼 ────────────────────────────── */
+.logout-btn {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 2px solid rgba(91, 200, 245, 0.4);
+  background: #fff;
+  color: var(--text-muted);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.logout-btn:hover {
+  background: var(--high-bg);
+  border-color: var(--high);
+  color: var(--high);
+}
+
+header { position: relative; }
+
+/* ── Auth 오버레이 ────────────────────────────── */
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(160deg, var(--bg) 0%, var(--bg2) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+
+.auth-card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 36px 28px 28px;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  border: 2px solid rgba(91, 200, 245, 0.25);
+}
+
+.auth-stitch {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(58, 181, 229, 0.35));
+  animation: bounce 2.8s ease-in-out infinite;
+}
+
+.auth-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.6rem;
+  color: var(--blue-3);
+  letter-spacing: 0.02em;
+}
+
+.auth-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.auth-input {
+  width: 100%;
+  border: 2px solid #d0eefa;
+  border-radius: 14px;
+  padding: 11px 16px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text);
+  outline: none;
+  background: #f5fbff;
+  transition: border-color 0.2s;
+}
+
+.auth-input:focus {
+  border-color: var(--blue-1);
+  background: #fff;
+}
+
+.auth-submit {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--blue-1), var(--blue-3));
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(58, 181, 229, 0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+  margin-top: 4px;
+}
+
+.auth-submit:hover  { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(58,181,229,0.5); }
+.auth-submit:active { transform: scale(0.97); }
+.auth-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.auth-error {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--high);
+  text-align: center;
+  min-height: 1.2em;
+}
+
+.auth-switch-text {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.auth-switch-text a {
+  color: var(--blue-3);
+  font-weight: 800;
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+.auth-switch-text a:hover { text-decoration: underline; }

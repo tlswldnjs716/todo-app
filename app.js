@@ -7,6 +7,7 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 let todos = [];
 let currentPriority = 'mid';
 let currentFilter = 'all';
+let currentUser = null;
 
 // ── 날짜 ──────────────────────────────────────
 document.getElementById('date').textContent =
@@ -29,6 +30,95 @@ document.getElementById('date').textContent =
     wrap.appendChild(b);
   }
 })();
+
+// ── Auth UI ────────────────────────────────────
+let authMode = 'login';
+
+const AUTH_ERRORS = {
+  'Invalid login credentials':           '이메일 또는 비밀번호가 올바르지 않아요.',
+  'Email not confirmed':                 '이메일 인증이 필요해요. 메일함을 확인해주세요.',
+  'User already registered':             '이미 가입된 이메일이에요.',
+  'Password should be at least 6 characters': '비밀번호는 6자 이상이어야 해요.',
+};
+
+function showAuth() { document.getElementById('auth-overlay').style.display = 'flex'; }
+function hideAuth() { document.getElementById('auth-overlay').style.display = 'none'; }
+
+function setAuthMode(mode) {
+  authMode = mode;
+  const isLogin = mode === 'login';
+  document.getElementById('auth-desc').textContent        = isLogin ? '로그인하고 시작해요!' : '새 계정을 만들어요!';
+  document.getElementById('auth-submit').textContent      = isLogin ? '로그인' : '회원가입';
+  document.getElementById('auth-switch-label').textContent = isLogin ? '계정이 없으신가요?' : '이미 계정이 있으신가요?';
+  document.getElementById('auth-switch').textContent      = isLogin ? '회원가입' : '로그인';
+  document.getElementById('auth-error').textContent       = '';
+  document.getElementById('auth-error').style.color       = 'var(--high)';
+}
+
+document.getElementById('auth-switch').addEventListener('click', (e) => {
+  e.preventDefault();
+  setAuthMode(authMode === 'login' ? 'signup' : 'login');
+});
+
+document.getElementById('auth-submit').addEventListener('click', handleAuth);
+document.getElementById('auth-password').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') handleAuth();
+});
+
+async function handleAuth() {
+  const email    = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  const errorEl  = document.getElementById('auth-error');
+  const btn      = document.getElementById('auth-submit');
+
+  if (!email || !password) {
+    errorEl.textContent = '이메일과 비밀번호를 입력해주세요.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '처리 중...';
+  errorEl.textContent = '';
+
+  const fn = authMode === 'login'
+    ? db.auth.signInWithPassword({ email, password })
+    : db.auth.signUp({ email, password });
+
+  const { data, error } = await fn;
+
+  if (error) {
+    errorEl.textContent = AUTH_ERRORS[error.message] || error.message;
+    btn.disabled = false;
+    btn.textContent = authMode === 'login' ? '로그인' : '회원가입';
+    return;
+  }
+
+  if (authMode === 'signup' && !data.session) {
+    errorEl.style.color = 'var(--low)';
+    errorEl.textContent = '가입 완료! 이메일 인증 후 로그인해주세요.';
+    btn.disabled = false;
+    setAuthMode('login');
+  }
+}
+
+// ── 로그아웃 ───────────────────────────────────
+document.getElementById('logout-btn').addEventListener('click', () => db.auth.signOut());
+
+// ── Auth 상태 감지 ─────────────────────────────
+db.auth.onAuthStateChange((event, session) => {
+  if (session) {
+    currentUser = session.user;
+    hideAuth();
+    document.getElementById('logout-btn').style.display = 'block';
+    init();
+  } else {
+    currentUser = null;
+    todos = [];
+    render();
+    showAuth();
+    document.getElementById('logout-btn').style.display = 'none';
+  }
+});
 
 // ── 우선순위 버튼 ──────────────────────────────
 document.getElementById('priority-btns').addEventListener('click', (e) => {
@@ -59,11 +149,11 @@ document.getElementById('todo-input').addEventListener('keydown', (e) => {
 async function addTodo() {
   const input = document.getElementById('todo-input');
   const text = input.value.trim();
-  if (!text) return;
+  if (!text || !currentUser) return;
 
   const { data, error } = await db
     .from('todos')
-    .insert({ text, completed: false, priority: currentPriority })
+    .insert({ text, completed: false, priority: currentPriority, user_id: currentUser.id })
     .select()
     .single();
 
@@ -167,5 +257,3 @@ async function init() {
   todos = data;
   render();
 }
-
-init();
